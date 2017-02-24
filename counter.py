@@ -2,6 +2,7 @@
 
 from os.path import exists
 import sys
+import pickle
 from pickle import dump, load
 
 
@@ -30,7 +31,28 @@ def update_counter(file_name, reset=False):
     >>> update_counter('blah2.txt')
     2
     """
-    pass
+
+    if reset == True:
+        fout = open(file_name,'wb')
+        initial_value = 1
+        stringed_new_value = pickle.dumps(initial_value)
+        updated_value = pickle.loads(stringed_new_value)
+        fout.write(stringed_new_value)
+        fout.close()
+        return updated_value
+    elif reset == False:
+        if exists(file_name):
+            fout = open(file_name,'rb+')
+            initial_value = pickle.load(fout)
+            fout.close()
+            fout = open(file_name, 'wb')
+            updated_value = initial_value + 1
+            stringed_new_value = pickle.dumps(updated_value)
+            fout.write(stringed_new_value)
+            fout.close()
+            return updated_value
+        elif:
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
